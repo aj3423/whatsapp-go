@@ -9,3 +9,6 @@ It contains almost all the features of WA and WA Business, include and not limit
 - message (personal/group, type: text, image, video, ptt, contact, url, document)
 - others like: multi device, 2FA, chat state, heartbeat, presence, cdn, notifications...
 
+Last updated
+====
+2022.11
