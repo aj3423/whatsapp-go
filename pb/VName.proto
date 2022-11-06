@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+option go_package = ".;pb";
+
+message VName {
+	message CERT {
+		optional uint64 Rand_64 = 1; // Math.abs(new SecureRandom().nextLong());
+		optional string Smb_wa  = 2; // "smb:wa"
+		optional string Nick    = 4; // ""
+	}
+
+	optional CERT  Cert      = 1;
+	optional bytes Signature = 2;
+}

@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+option go_package = ".;pb";
+
+message PatternStep {
+	optional bytes S1 = 1;
+	optional bytes S2 = 2;
+	optional bytes S3 = 3;
+}
+
+message PatternXX {
+	optional PatternStep E         = 2; // e
+	optional PatternStep E_EE_S_ES = 3; // e, ee, s, es
+	optional PatternStep S_SE      = 4; // s, se
+}
+
+message PatternIK {
+	optional PatternStep E_EE_S_ES = 2; // e, es, s, ss ->
+	optional PatternStep E_EE_SE   = 3; // <- e, ee, se
+}

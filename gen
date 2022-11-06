@@ -1,0 +1,2 @@
+#!/bin/fish
+go run pb_gen/pb_gen.go

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+	echo "usage: ./dump AccId";
+	echo "eg: ./dump 8613011112222";
+	exit
+fi
+
+for i in Profile Device Config Schedule Session Prekey Identity SignedPrekey SenderKey Proxy Message Group GroupMember WamSchedule Cdn;
+do 
+	mongodump --db wa --query '{"AccId":'$1'}' --out acc_dump --collection $i
+done

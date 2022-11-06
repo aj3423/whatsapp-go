@@ -1,0 +1,39 @@
+go 1.18
+
+use .
+
+use ../afs
+
+use ../ahex
+
+use ../ajson
+use ../aregex
+use ../acolor
+use ../buffer
+use ../gui
+
+use ../algo
+
+use ../aconfig
+
+use ../arand
+
+use ../event
+
+use ../scope
+
+use ../phoenix
+
+use ../i
+
+use ../str
+
+use ../L
+
+use ../console
+
+use ../android
+
+use ../run
+
+use ../aproto

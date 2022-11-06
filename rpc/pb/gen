@@ -1,0 +1,2 @@
+#!/bin/fish
+protoc --go_out=. --go-grpc_out=. *.proto

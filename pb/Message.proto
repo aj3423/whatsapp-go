@@ -1,0 +1,195 @@
+syntax = "proto2";
+
+option go_package = ".;pb";
+
+message Image { // 3
+	optional string messageUrl        = 1;
+	optional string mimeType          = 2;
+	optional bytes  text              = 3;
+	optional bytes  fileHash          = 4;
+	optional uint32 fileLength        = 5;
+	optional uint32 height            = 6;
+	optional uint32 width             = 7;
+	optional bytes  mediaKey          = 8;
+	optional bytes  encFileHash       = 9;
+	optional string directPath        = 11;
+	optional uint32 mediaKeyTimestamp = 12;
+	optional bytes  thumbnail         = 16;
+/* 
+sidecar:
+	https://github.com/sigalor/whatsapp-web-reveng/blob/master/README.md
+
+	This step is required only for streamable media, e.g. video and audio. 
+	As CBC mode allows to decrypt a data from random offset (block-size aligned), 
+	it is possible to play and seek the media without the need to fully download it. 
+	That said, we need to generate a sidecar. 
+	Do it by signing every [n*64K, (n+1)*64K+16] chunk with macKey, 
+	truncating the result to the first 10 bytes. 
+	Then combine everything in one piece.
+*/
+	optional bytes  sidecar           = 21;	//message_streaming_sidecar sidecar
+	repeated uint32 firstScanLength   = 22;
+	optional bytes  partialMediaHash  = 23;	
+	optional bytes  partialMediaEHash = 24; 
+}
+
+message Contact { // 4
+	optional string name  = 1;
+	optional string vcard = 16;
+}
+message ContactArray { // 13
+	optional string  title = 1;
+	repeated Contact list  = 2;
+}
+
+/*
+[32] 6 string: (6721): 
+    [0a] 1 string: (20): https://www.bing.com
+    [12] 2 string: (20): https://www.bing.com
+    [22] 4 string: (61): https://www.bing.com/?form=HPFBBK&ssd=20220824_0700&mkt=zh-HK
+    [2a] 5 string: (50): This camouflaged panther chameleon is one of a mul
+    [32] 6 string: (4): Info (49 6e 66 6f)
+    [50] 10 varint: 0 (0x0)
+    [82 01] 16 string: (6547): ff d8 ff e0 00 10 4a 46 49 46 00 01 01 00 00 01 00 01 00 00 ff db 00 43 00 06 04 05 06 05 04 06 ...
+    [e8 01] 29 varint: 0 (0x0)
+
+or :
+
+[32] 6 string: (6985): 
+    [0a] 1 string: (20): https://www.bing.com
+    [12] 2 string: (20): https://www.bing.com
+    [22] 4 string: (61): https://www.bing.com/?form=HPFBBK&ssd=20220814_0700&mkt=zh-HK
+    [2a] 5 string: (50): This camouflaged panther chameleon is one of a mul
+    [32] 6 string: (4): Info (49 6e 66 6f)
+    [50] 10 varint: 0 (0x0)
+    [82 01] 16 string: (6547): ff d8 ff e0 00 10 4a 46 49 46 00 01 01 00 00 01 00 01 00 00 ff db 00 43 00 06 04 05 06 05 04 06 ...
+
+    [9a 01] 19 string: (140): /v/t62.36244-24/35204578_832677781476215_8323076411855510632_n.enc?ccb=11-4&oh=01_AVxEiKlu4liXcBUBxQsW2tOUUdel5RHPvJZYq07AyjKIJA&oe=631F8D2A
+    [a2 01] 20 string: (32): ...RawBigImg.Sha256
+    [aa 01] 21 string: (32): (WTF) f3 1b 0c 6f 4e a7 eb f8 3f 5c c3 a0 91 8c 68 1a 30 9c 8f b8 f4 8b 35 d9 22 ab e5 de d9 15 56 e6
+    [b2 01] 22 string: (32): (WTF) f5 fc 37 7b 4d 08 82 b2 02 bc c1 aa b2 d2 2f de 42 64 06 cf 64 06 d8 7c f7 e4 89 ad c4 1e 22 51
+    [b8 01] 23 varint: 1660471608 (0x62f8c938)
+    [c0 01] 24 varint: 768 (0x300)
+    [c8 01] 25 varint: 1366 (0x556)
+
+    [e8 01] 29 varint: 0 (0x0)
+
+*/
+message Url { // 6
+	optional string  data            = 1;
+	optional string  url             = 2;
+	optional string  mediaName       = 5;
+	optional string  mediaCaption    = 6;
+
+	// sns
+	optional fixed32 textColor       = 7; // ffffffff
+	optional fixed32 backgroundColor = 8; // ffxxxxxx
+	optional int32   fontStyle       = 9;
+
+	optional int32   int_10          = 10;
+	optional bytes   thumbImage      = 16;
+	// optional
+	optional string  directPath      = 19;
+	optional bytes   rawImageHash    = 20; // Sha256 of raw big image
+	optional bytes   wtf_32_bytes_21 = 21;
+	optional bytes   wtf_32_bytes_22 = 22;
+	optional int32   timestamp       = 23;
+	optional int32   imgHeight       = 24;
+	optional int32   imgWidth        = 25;
+}
+
+message Document { // 7
+	optional string mediaUrl          = 1;
+	optional string mimeType          = 2;
+	optional string mediaName         = 3;
+	optional bytes  mediaHash         = 4;
+	optional uint32 mediaSize         = 5;
+	optional int32  int_6             = 6;
+	optional bytes  mediaKey          = 7;
+	optional string mediaCaption      = 8;
+	optional bytes  mediaEncHash      = 9;
+	optional string directPath        = 10;
+	optional uint32 mediaKeyTimestamp = 11;
+}
+
+message Ptt { // 8
+	optional string messageUrl        = 1;
+	optional string mimeType          = 2;
+	optional bytes  fileHash          = 3;
+	optional uint32 fileLength        = 4;
+	optional uint32 mediaDuration     = 5;
+	optional uint32 origin            = 6; 
+	optional bytes  mediaKey          = 7;
+	optional bytes  encFileHash       = 8;
+	optional string directPath        = 9;
+	optional uint32 mediaKeyTimestamp = 10;
+	//optional string                   = 18; // Mac ? not sure 
+}
+message Video { // 9
+	optional string messageUrl        = 1;
+	optional string mimeType          = 2;
+	optional bytes  fileHash          = 3;
+	optional uint32 fileLength        = 4;
+	optional uint32 mediaDuration     = 5; // in seconds
+	optional bytes  mediaKey          = 6;
+	optional bytes  text              = 7;
+	optional uint32 height            = 9;
+	optional uint32 width             = 10;
+	optional bytes  encFileHash       = 11;
+	optional string directPath        = 13;
+	optional uint32 mediaKeyTimestamp = 14;
+	optional bytes  thumbnail         = 16;
+
+	optional bytes  sidecar           = 18;	//message_streaming_sidecar sidecar
+}
+
+message Sticker { // 26
+	optional string messageUrl        = 1;
+	optional bytes  fileHash          = 2;
+	optional bytes  encFileHash       = 3;
+	optional bytes  mediaKey          = 4;
+	optional string mimeType          = 5;
+	optional uint32 width             = 6;
+	optional uint32 height            = 7;
+	optional string directPath        = 8;
+	optional uint32 fileLength        = 9;
+	optional uint32 mediaKeyTimestamp = 10;
+	//optional uint32 int_13    = 13;
+}
+
+
+message Media {
+	enum Type {
+		Unknown       = 0;
+		Text          = 1;
+		Skdm          = 2;
+		Image         = 3;
+		Contact       = 4;
+		Url           = 6;
+		Document      = 7;
+		Ptt           = 8;
+		Video         = 9;
+		Contact_Array = 13;
+		Sticker       = 26;
+	}
+}
+
+message Message {
+
+	message Group {
+		optional string id   = 1;
+		optional bytes  skdm = 2; // sender key distribution message
+	}
+	optional bytes        text         = 1;
+	optional Group        grp          = 2;
+
+	optional Image        image        = 3;
+	optional Contact      contact      = 4;
+	optional Url          url          = 6;
+	optional Document     document     = 7;
+	optional Ptt          ptt          = 8;
+	optional Video        video        = 9;
+	optional ContactArray contactArray = 13;
+
+	optional Sticker      sticker      = 26;
+}

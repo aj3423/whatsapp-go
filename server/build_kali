@@ -1,0 +1,28 @@
+#!/bin/fish
+if test -e ./server
+	rm server
+end
+if test -e ./server.linux.zip
+	rm server.linux.zip
+end
+if test -e ./test.go
+	rm test.go
+end
+if test -e ./Rpc.proto
+	rm Rpc.proto
+end
+
+set bt (date '+%Y-%m-%d %H:%M:%S')
+CGO_LDFLAGS="-static" go build -buildvcs=false -tags production -ldflags "-s -w -X 'main.BuildTime=$bt'"
+
+if test -e ./server 
+	echo "---- build success  ----"
+
+	# cp ../test/test.go .
+	# cp ../rpc/pb/Rpc.proto .
+	# zip server.linux.zip server test.go Rpc.proto
+	#
+	# #rm server
+	# rm test.go
+	# rm Rpc.proto
+end

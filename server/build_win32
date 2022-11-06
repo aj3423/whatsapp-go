@@ -1,0 +1,28 @@
+#!/bin/fish
+if test -e ./server.exe
+	rm server.exe
+end
+if test -e ./server.exe.zip
+	rm server.exe.zip
+end
+if test -e ./test.go
+	rm test.go
+end
+if test -e ./Rpc.proto
+	rm Rpc.proto
+end
+
+set bt (date '+%Y-%m-%d %H:%M:%S')
+GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++  go build -tags production -ldflags "-s -w -X 'main.BuildTime=$bt'"
+if test -e ./server.exe 
+	echo "build success"
+
+	cp ../test/test.go .
+	cp ../rpc/pb/Rpc.proto .
+	zip server.exe.zip server.exe test.go Rpc.proto
+
+	rm server.exe
+	rm test.go
+	rm Rpc.proto
+end
+

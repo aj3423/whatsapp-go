@@ -1,0 +1,59 @@
+syntax = "proto2";
+
+option go_package = ".;pb";
+
+/*
+	jadx for:
+		non numeric portion of version name;
+
+	search for this proto:
+	1. search for  "connection_lc"
+	2. find:
+		int connection_lc = v81.getInt("connection_lc", 0);
+		v8_3.A02();
+		4Ht v1_37 = (4Ht)v8_3.A00;
+		v1_37.A01 |= 0x10000;
+		v1_37.connection_lc = connection_lc;
+	3. x_ref for v1_37.connection_lc
+
+	"chatd_connection: created IO streams; sessionId="
+*/
+message NoiseHandshakeDevice {
+	message _struct_5 {
+		message Version {
+			optional int32 V1 = 1; // 2
+			optional int32 V2 = 2; // 20
+			optional int32 V3 = 3; // 206
+			optional int32 V4 = 4; // 22
+		}
+		optional int32     SMB_Android = 1; // 0:Personal new 2X6("ANDROID", 0, 0),  10:Biz  new 28J("SMB_ANDROID", 10, 10)
+		optional Version   Ver        = 2;
+		optional string    Mcc        = 3; // 460
+		optional string    Mnc        = 4; // 001
+		optional string    AndroidVersion = 5; // 9
+		optional string    Brand      = 6; // Xiaomi
+		optional string    Product    = 7; // wayne
+		optional string    Build      = 8; // PKQ1.180904.001
+		optional string    Fdid       = 9;
+		optional int32     IsBeta     = 10; // 1: beta, null:non-beta
+		optional string    Language   = 11; // zh
+		optional string    Locale     = 12;
+		optional string    Board      = 13;
+	}
+	message DNS {
+		optional int32 Config = 15; // 0, SYSTEM(0), GOOGLE(1), HARDCODED(2), OVERRIDE(3), FALLBACK(4)
+		optional int32 Int_16 = 16; // 0, hardcoded
+	}
+
+	optional uint64    FullPhone      = 1;  // 8618522223333
+	optional int32     Passive        = 3;  // 1: XX, 0: IK
+	optional _struct_5 Struct_5       = 5;
+	optional string    Nick           = 7;  // XCH_nick
+	optional fixed32   SessionId      = 9;  //
+	optional int32     Int_10         = 10; // 0 force_long_connect, ALI: 1
+	optional int32     NetworkSubType = 12; // 1:WIFI  111:4g
+	optional DNS       Dns            = 15; // Beta only
+	optional int32     ConnectionSequenceAttempts = 16; // Beta only, 1, starts from 1
+	optional int32     SignatureMatch = 23; // sha1(getPackageInfo.Signature) == `...`
+	optional int32     connection_lc  = 24; // every login +1
+}

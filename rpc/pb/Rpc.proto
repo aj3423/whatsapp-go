@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = ".;pb";
+
+package pb;
+
+message Json {
+  string data = 1; // json string
+}
+
+service Rpc {
+  rpc Exec (Json) returns (Json) {}
+  rpc Push (Json) returns (stream Json);
+}
+
