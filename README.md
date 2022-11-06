@@ -2,10 +2,10 @@ This is a Golang implementation of WhatsApp, reverse engineered from Android ver
 
 features
 ====
-It has almost all the features of WA and WA Business, include and not limited to:
+It contains almost all the features of WA and WA Business, include and not limited to:
 - register (customize device, proxy, dns, tls fingerprint)
 - login (or clone session from phone files)
-- contacts (upload, syncing, query)
-- message (personal/group, include type: text, image, video, ptt, contact, url, document)
+- contact (upload, syncing, query)
+- message (personal/group, type: text, image, video, ptt, contact, url, document)
 - others like: multi device, 2FA, chat state, heartbeat, presence, cdn, notifications...
 
